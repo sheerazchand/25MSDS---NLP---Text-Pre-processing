@@ -341,29 +341,6 @@ else:  # Download page
         - Stemmed tokens
         """)
     
-    with col2:
-        st.markdown("#### 📊 Summary Report")
-        st.write("Detailed preprocessing report for submission")
-        
-        # Read the report file
-        with open('data/anxiety_preprocessed.csv', 'r') as f:
-            report_data = f.read()
-        
-        st.download_button(
-            label="Download preprocessing_report.txt",
-            data=report_data,
-            file_name="preprocessing_report.txt",
-            mime="text/plain"
-        )
-        
-        st.info("""
-        **Contents:**
-        - All preprocessing steps
-        - Statistics and metrics
-        - Examples from dataset
-        - Impact analysis
-        """)
-    
     st.markdown("---")
 
 # Footer
