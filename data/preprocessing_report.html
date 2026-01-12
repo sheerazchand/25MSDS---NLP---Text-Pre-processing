@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Preprocessing Report - Anxiety Dataset</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+        }
+        
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .metric-label {
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .preprocessing-step {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        
+        .example-box {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .code {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            border-left: 3px solid #667eea;
+        }
+        
+        .statistics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .progress-bar {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .word-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .word-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .download-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .download-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        @media (max-width: 768px) {
+            .statistics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Text Preprocessing Report</h1>
+            <div class="subtitle">MSDS NLP 2025 - Anxiety Dataset Analysis</div>
+        </div>
+        
+        <div class="metrics">
+            <div class="metric-card">
+                <div class="metric-value">5,946</div>
+                <div class="metric-label">Total Posts</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">9</div>
+                <div class="metric-label">Preprocessing Steps</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">53.3%</div>
+                <div class="metric-label">Token Reduction</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">April 2019</div>
+                <div class="metric-label">Date Range</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📋 Dataset Overview</h2>
+            <p>This dataset contains Reddit posts from the <strong>r/Anxiety</strong> subreddit collected during April 2019. 
+            The posts provide valuable insights into anxiety-related discussions and experiences shared by the community.</p>
+            
+            <div class="statistics-grid">
+                <div class="stat-box">
+                    <h3>Key Statistics</h3>
+                    <ul>
+                        <li>Total Posts: 5,946</li>
+                        <li>Subreddit: r/Anxiety</li>
+                        <li>Date Range: April 1-30, 2019</li>
+                        <li>Average Text Length: 896.8 characters</li>
+                    </ul>
+                </div>
+                <div class="stat-box">
+                    <h3>Preprocessing Impact</h3>
+                    <ul>
+                        <li>Original Tokens: 169.6 per post</li>
+                        <li>After Processing: 79.2 per post</li>
+                        <li>Reduction: 53.3%</li>
+                        <li>Vocabulary Size: ~15,000 unique terms</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🔧 Preprocessing Steps Applied</h2>
+            
+            <div class="preprocessing-step">
+                <div class="step-title">1. Lowercasing</div>
+                <p>Convert all text to lowercase for consistency</p>
+                <div class="code">
+                    Before: "I'm Having ANXIETY about My JOB"<br>
+                    After: "i'm having anxiety about my job"
+                </div>
+            </div>
+            
+            <div class="preprocessing-step">
+                <div class="step-title">2. Contraction Expansion</div>
+                <p>Expand contractions for better analysis</p>
+                <div class="code">
+                    Before: "don't, it's, I'm"<br>
+                    After: "do not, it is, I am"
+                </div>
+                <p>Found in <span class="highlight">47.2% of posts</span></p>
+            </div>
+            
+            <div class="preprocessing-step">
+                <div class="step-title">3. URL/Email Removal</div>
+                <p>Remove web links and email addresses</p>
+                <div class="code">
+                    Before: "Check https://example.com"<br>
+                    After: "Check [URL]"
+                </div>
+                <p>Found in <span class="highlight">1.8% of posts</span></p>
+            </div>
+            
+            <div class="preprocessing-step">
+                <div class="step-title">4. Number Normalization</div>
+                <p>Replace numbers with placeholder token</p>
+                <div class="code">
+                    Before: "3 years ago"<br>
+                    After: "NUM years ago"
+                </div>
+                <p>Found in <span class="highlight">46.7% of posts</span></p>
+            </div>
+            
+            <div class="preprocessing-step">
+                <div class="step-title">5. Punctuation Removal</div>
+                <p>Remove excessive punctuation</p>
+                <div class="code">
+                    Before: "Help!!!"<br>
+                    After: "Help."
+                </div>
+                <p>Found in <span class="highlight">18.8% of posts</span></p>
+            </div>
+            
+            <div class="preprocessing-step">
+                <div class="step-title">6. Whitespace Normalization</div>
+                <p>Remove extra spaces and newlines</p>
+                <div class="code">
+                    Before: "text    with    spaces"<br>
+                    After: "text with spaces"
+                </div>
+            </div>
+            
+            <div class="preprocessing-step">
+                <div class="step-title">7. Tokenization</div>
+                <p>Split text into individual words</p>
+                <div class="code">
+                    Before: "I have anxiety"<br>
+                    After: ['I', 'have', 'anxiety']
+                </div>
+            </div>
+            
+            <div class="preprocessing-step">
+                <div class="step-title">8. Stopword Removal</div>
+                <p>Remove 152 common English words</p>
+                <div class="code">
+                    Before: "I have the anxiety"<br>
+                    After: ['anxiety']
+                </div>
+                <p>Token count reduced by <span class="highlight">53.3%</span></p>
+            </div>
+            
+            <div class="preprocessing-step">
+                <div class="step-title">9. Stemming</div>
+                <p>Reduce words to root form</p>
+                <div class="code">
+                    Before: "running, worried, feeling"<br>
+                    After: "run, worri, feel"
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📊 Preprocessing Requirements Analysis</h2>
+            
+            <h3>Issues Found in Dataset</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 47.2%;">Contractions: 47.2%</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 46.7%;">Numbers: 46.7%</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 18.8%;">Excessive Punctuation: 18.8%</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 1.8%;">URLs: 1.8%</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>💬 Most Frequent Terms</h2>
+            <p>Top 15 terms after preprocessing (with frequency):</p>
+            <div class="word-cloud">
+                <span class="word-item">anxiety (1447)</span>
+                <span class="word-item">feel (1367)</span>
+                <span class="word-item">like (1182)</span>
+                <span class="word-item">num (1009)</span>
+                <span class="word-item">get (754)</span>
+                <span class="word-item">know (678)</span>
+                <span class="word-item">real (612)</span>
+                <span class="word-item">want (553)</span>
+                <span class="word-item">time (537)</span>
+                <span class="word-item">think (500)</span>
+                <span class="word-item">work (480)</span>
+                <span class="word-item">would (477)</span>
+                <span class="word-item">thing (460)</span>
+                <span class="word-item">day (457)</span>
+                <span class="word-item">help (433)</span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📝 Examples from Dataset</h2>
+            
+            <div class="example-box">
+                <h3>Example 1: Contraction Expansion & Number Normalization</h3>
+                <p><strong>Original:</strong> "I'm going to give my 2 months notice to my employer today. It's a great company..."</p>
+                <p><strong>Processed:</strong> "going give num month notice employer today great company..."</p>
+            </div>
+            
+            <div class="example-box">
+                <h3>Example 2: Stopword Removal & Stemming</h3>
+                <p><strong>Original:</strong> "I got fired at my sidejob at a retail store, I had no previous experience..."</p>
+                <p><strong>Processed:</strong> "got fir sidejob retail store previous experience..."</p>
+            </div>
+            
+            <div class="example-box">
+                <h3>Example 3: Punctuation & Whitespace Normalization</h3>
+                <p><strong>Original:</strong> "I always feels and act like I'm in a hurry even if I have literally nothing to do!!!"</p>
+                <p><strong>Processed:</strong> "alway feel act like hurry even literal noth"</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>✅ Why Each Preprocessing Step Was Necessary</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Preprocessing Type</th>
+                        <th>Reason</th>
+                        <th>Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Contraction Expansion</strong></td>
+                        <td>Essential for standardizing text and proper tokenization</td>
+                        <td>47.2% of posts required this</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Number Normalization</strong></td>
+                        <td>Important for generalization in pattern recognition</td>
+                        <td>46.7% of posts contained numbers</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stopword Removal</strong></td>
+                        <td>Focuses analysis on meaningful content words</td>
+                        <td>Reduced tokens by 53.3%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stemming</strong></td>
+                        <td>Groups related words together for better analysis</td>
+                        <td>Normalized word variations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>URL Removal</strong></td>
+                        <td>Eliminates non-textual content</td>
+                        <td>1.8% of posts had URLs</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 Applications</h2>
+            <p>The preprocessed dataset is now ready for:</p>
+            <ul>
+                <li>✓ Sentiment Analysis - Understanding emotional states in anxiety discussions</li>
+                <li>✓ Topic Modeling (LDA, NMF) - Discovering common themes and concerns</li>
+                <li>✓ Text Classification - Categorizing types of anxiety experiences</li>
+                <li>✓ Word Embeddings (Word2Vec, GloVe) - Creating semantic representations</li>
+                <li>✓ Feature Engineering for Machine Learning - Building predictive models</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
