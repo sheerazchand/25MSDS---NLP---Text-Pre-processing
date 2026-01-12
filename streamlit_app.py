@@ -346,7 +346,7 @@ else:  # Download page
         st.write("Detailed preprocessing report for submission")
         
         # Read the report file
-        with open('/mnt/user-data/outputs/preprocessing_report.txt', 'r') as f:
+        with open('data/anxiety_preprocessed.csv', 'r') as f:
             report_data = f.read()
         
         st.download_button(
