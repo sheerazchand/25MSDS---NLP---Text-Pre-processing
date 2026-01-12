@@ -365,37 +365,6 @@ else:  # Download page
         """)
     
     st.markdown("---")
-    st.markdown("### 📤 How to Submit via Microsoft Teams")
-    
-    st.write("""
-    1. **Download both files** using the buttons above
-    2. **Open Microsoft Teams** and navigate to your class channel
-    3. **Go to the Assignments tab** or find the specific assignment
-    4. **Click "Add work"** or "Attach files"
-    5. **Upload both files:**
-       - `anxiety_preprocessed.csv` - The processed dataset
-       - `preprocessing_report.txt` - The detailed report
-    6. **Add a message** (optional):
-       ```
-       Dear Professor,
-       
-       I have completed the text preprocessing assignment on the Anxiety dataset.
-       
-       Attached are:
-       1. The preprocessed dataset (CSV file)
-       2. A comprehensive report detailing all preprocessing steps and examples
-       
-       Key findings:
-       - Applied 9 preprocessing techniques
-       - Reduced token count by 53.3% through stopword removal
-       - 47.2% of posts required contraction expansion
-       - Dataset is now ready for sentiment analysis and topic modeling
-       
-       Thank you,
-       [Your Name]
-       ```
-    7. **Click "Turn in"** or "Submit"
-    """)
 
 # Footer
 st.markdown("---")
