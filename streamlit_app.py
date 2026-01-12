@@ -20,7 +20,7 @@ st.markdown("---")
 # Load the processed data
 @st.cache_data
 def load_data():
-    df = pd.read_csv('/mnt/user-data/outputs/anxiety_preprocessed.csv')
+    df = pd.read_csv('data/anxiety_preprocessed.csv')
     return df
 
 df = load_data()
@@ -322,7 +322,7 @@ else:  # Download page
         st.write("Complete dataset with all preprocessing stages")
         
         # Read the CSV file
-        with open('/mnt/user-data/outputs/anxiety_preprocessed.csv', 'r') as f:
+        with open('data/anxiety_preprocessed.csv', 'r') as f:
             csv_data = f.read()
         
         st.download_button(
